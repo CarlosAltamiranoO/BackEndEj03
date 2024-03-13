@@ -1,6 +1,6 @@
 import fs from 'fs'
 
-class ProductManager {
+export class ProductManager {
     constructor(path) {
         this.path = path;
         this.products = [];
@@ -43,20 +43,14 @@ class ProductManager {
         }
     }
 
-    async addProduct(title, description, price, thumbnail, code, stock) {
+    async addProduct(product) {
         await this.getProducts();
 
-        if (this.#findCode(code)) return 'el codigo del producto ya se encuentra cargado!'
-        let id = this.#addId();
-        let product = {
-            id: id,
-            title: title,
-            description: description,
-            price: price,
-            thumbnail: thumbnail,
-            code: code,
-            stock: stock,
-        };
+        if (this.#findCode(product.code)) return 'el codigo del producto ya se encuentra cargado!'
+        if(product.status === undefined) product.status = true; // ver si se puede reemplazar por product.status = product.status || true;
+        const id = this.#addId();
+        product = {id: id, ...product}
+
         this.products.push(product);
         this.#salveProduct();
         return 'se cargo el producto'
@@ -98,4 +92,4 @@ class ProductManager {
         await this.#salveProduct()
         return "se elimino el producto"
     }
-} export default ProductManager
+}
