@@ -17,7 +17,7 @@ export class ProductManager {
         else return true;
     }
 
-    #findIndice(id){
+    #findIndice(id) {
         const indice = this.products.map(product => product.id).indexOf(id)
         return indice
     }
@@ -27,7 +27,7 @@ export class ProductManager {
             const json = JSON.stringify(this.products, null, '\t')
             await fs.promises.writeFile(this.path, json)
         } catch (Error) {
-            console.error(error)
+            console.log(Error)
         }
     }
 
@@ -39,17 +39,15 @@ export class ProductManager {
             return this.products
         } catch (error) {
             if (error.code == "ENOENT") return [];
-            console.error(error)
         }
     }
 
     async addProduct(product) {
         await this.getProducts();
-
         if (this.#findCode(product.code)) return 'el codigo del producto ya se encuentra cargado!'
-        if(product.status === undefined) product.status = true; // ver si se puede reemplazar por product.status = product.status || true;
+        if (product.status === undefined) product.status = true; // ver si se puede reemplazar por product.status = product.status || true;
         const id = this.#addId();
-        product = {id: id, ...product}
+        product = { id: id, ...product }
 
         this.products.push(product);
         this.#salveProduct();
@@ -58,29 +56,35 @@ export class ProductManager {
 
     async getProductById(id) {
         await this.getProducts();
-
         let product;
         product = this.products.find(elem => elem.id === id)
         if (product === undefined) return 'Not Found'
         return product
     }
 
-    async updateProduct(id, campoActualizar, cambio) {
+    async updateProduct(id, product) {
         await this.getProducts();
 
         const indice = this.#findIndice(id)
+        const producto = await this.getProductById(id)
+        console.log(producto)
         if (indice === -1) return "no hay producto a actualizar"
 
-        const producto = this.products[indice]
-        Object.defineProperty(producto, campoActualizar, { // metodo para cambiar la propiedad de un objeto, talves mejor cambiarlo 
-            value: cambio,
-            writable: true,
-            configurable: true,
-            enumerable: true,
-        })
-        this.products[indice] = producto;
+        const productUpdated = {
+            id: producto.id,
+            title: product.title || producto.title,
+            description: product.description || producto.description,
+            price: product.price || producto.price,
+            thumbnail: product.thumbnail || producto.thumbnail,
+            code: product.code || producto.code,
+            stock: product.stock || producto.stock,
+            status: product.status || producto.status,
+        }
+
+        this.products[indice] = productUpdated;
         await this.#salveProduct()
         return "Producto actualizado:"
+
     }
 
     async deleteProduct(id) {
@@ -91,5 +95,6 @@ export class ProductManager {
         this.products.splice(index, 1)
         await this.#salveProduct()
         return "se elimino el producto"
+
     }
 }

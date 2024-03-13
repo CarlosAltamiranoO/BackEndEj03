@@ -28,15 +28,14 @@ productRouter.post('/', async (req, res) => {
     }
 })
 
-productRouter.put('/:pid', async (req, res) => { // no funciona, hay que reformar el manager para que acepte producto y no solo la 
+productRouter.put('/:pid', async (req, res) => { // no funciona para actualizar el status (se puede cambiar el status de false a tru pero alrreves no
     try {
         const { pid } = req.params
         const producto = req.body
-        console.log(producto)
-        const respuesta = await manager.updateProduct(pid, producto)
-        console.log("respuesta", respuesta)
+        const respuesta = await manager.updateProduct(parseInt(pid), producto)
         res.json(respuesta)
     } catch (error) {
+        console.log(error)
         res.send('el producto no existe')
     }
 })

@@ -20,7 +20,7 @@ export class cartManager {
     }
     async salveCarts() {
         try {
-            const json = JSON.stringify(this.carts, null, 2)
+            const json = JSON.stringify(this.products, null, '\t')
             await fs.promises.writeFile(this.path, json)
             return true
         } catch (error) {

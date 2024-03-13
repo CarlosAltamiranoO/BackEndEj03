@@ -6,7 +6,8 @@
 		"price": 1250000,
 		"thumbnail": "-",
 		"code": "N109",
-		"stock": 4
+		"stock": 4,
+		"status": true
 	},
 	{
 		"id": 3,
@@ -15,15 +16,17 @@
 		"price": 85000,
 		"thumbnail": "-",
 		"code": "N10-1",
-		"stock": 9
+		"stock": 9,
+		"status": true
 	},
 	{
 		"id": 4,
 		"title": "pc",
 		"description": "computadora escritorio",
-		"price": 125000,
+		"price": 126000,
 		"thumbnail": "-",
 		"code": "T125",
-		"stock": 6
+		"stock": 6,
+		"status": true
 	}
 ]
